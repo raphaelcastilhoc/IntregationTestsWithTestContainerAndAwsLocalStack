@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace IntegrationTests.Fixtures
 {
@@ -29,9 +30,10 @@ namespace IntegrationTests.Fixtures
 
         public ServerCollectionFixture()
         {
-            BuildDatabase();
+            var databaseTask = BuildDatabase();
+            var localStackTask = BuildLocalStack();
 
-            BuildLocalStack();
+            Task.WhenAll(databaseTask, localStackTask).GetAwaiter().GetResult();
 
             WebApplicationFactory = new WebApplicationFactory<Startup>().WithWebHostBuilder(builder =>
             {
@@ -51,7 +53,7 @@ namespace IntegrationTests.Fixtures
             });
         }
 
-        private void BuildLocalStack()
+        private async Task BuildLocalStack()
         {
             var localStackTestContainersBuilder = new TestcontainersBuilder<TestcontainersContainer>()
                             .WithImage("localstack/localstack")
@@ -60,13 +62,13 @@ namespace IntegrationTests.Fixtures
                             .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(4566));
 
             LocalStackTestcontainer = localStackTestContainersBuilder.Build();
-            LocalStackTestcontainer.StartAsync().GetAwaiter().GetResult();
+            await LocalStackTestcontainer.StartAsync();
 
             LocalStackAccess = new LocalStackAccess();
             LocalStackAccess.CreateQueue("ProductQueue");
         }
 
-        private void BuildDatabase()
+        private async Task BuildDatabase()
         {
             var msSqlTestContainersBuilder = new TestcontainersBuilder<MsSqlTestcontainer>()
                 .WithDatabase(new MsSqlTestcontainerConfiguration
@@ -75,7 +77,7 @@ namespace IntegrationTests.Fixtures
                 });
 
             MsSqlTestcontainer = msSqlTestContainersBuilder.Build();
-            MsSqlTestcontainer.StartAsync().GetAwaiter().GetResult();
+            await MsSqlTestcontainer.StartAsync();
 
             DatabaseAccess = new DatabaseAccess(MsSqlTestcontainer.ConnectionString);
         }
