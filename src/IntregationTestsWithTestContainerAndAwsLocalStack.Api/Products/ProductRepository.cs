@@ -14,6 +14,14 @@ namespace IntregationTestsWithTestContainerAndAwsLocalStack.Api.Products
             _connection = connection;
         }
 
+        public async Task<Product> GetAsync(int id)
+        {
+            var query = @"SELECT Id, Name, Price FROM Product where Id = @Id";
+            var product = await _connection.QueryFirstOrDefaultAsync<Product>(query, new { Id = id });
+
+            return product;
+        }
+
         public async Task AddAsync(Product product)
         {
             var command = @"INSERT INTO [Product] VALUES (@Name, @Price); SELECT CAST(SCOPE_IDENTITY() as int);";

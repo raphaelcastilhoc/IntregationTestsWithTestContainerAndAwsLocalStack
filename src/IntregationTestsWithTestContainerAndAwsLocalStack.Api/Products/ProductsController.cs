@@ -1,4 +1,5 @@
 ﻿using IntregationTestsWithTestContainerAndAwsLocalStack.Api.Products.Commands;
+using IntregationTestsWithTestContainerAndAwsLocalStack.Api.Products.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,17 @@ namespace IntregationTestsWithTestContainerAndAwsLocalStack.Api.Products
             _mediator = mediator;
         }
 
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Route("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var request = new GetProductByIdQuery { Id = id };
+            var product = await _mediator.Send(request);
+
+            return Ok(product);
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Post(AddProductCommand command)
@@ -25,14 +37,6 @@ namespace IntregationTestsWithTestContainerAndAwsLocalStack.Api.Products
             var result = await _mediator.Send(command);
 
             return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
-        }
-
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [Route("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 }
