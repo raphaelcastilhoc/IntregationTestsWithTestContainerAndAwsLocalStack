@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntregationTestsWithTestContainerAndAwsLocalStack.Api", "IntregationTestsWithTestContainerAndAwsLocalStack.Api\IntregationTestsWithTestContainerAndAwsLocalStack.Api.csproj", "{B2AB0CE1-135B-44A1-8430-FC01EE7CFC0A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntregationTestsWithTestContainerAndAwsLocalStack.Api", "IntregationTestsWithTestContainerAndAwsLocalStack.Api\IntregationTestsWithTestContainerAndAwsLocalStack.Api.csproj", "{B2AB0CE1-135B-44A1-8430-FC01EE7CFC0A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{53823047-BC86-48F5-8F04-89E8247304FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{A6CE5A00-374C-4638-AF0D-A74930315AEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{B2AB0CE1-135B-44A1-8430-FC01EE7CFC0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2AB0CE1-135B-44A1-8430-FC01EE7CFC0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2AB0CE1-135B-44A1-8430-FC01EE7CFC0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6CE5A00-374C-4638-AF0D-A74930315AEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6CE5A00-374C-4638-AF0D-A74930315AEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6CE5A00-374C-4638-AF0D-A74930315AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6CE5A00-374C-4638-AF0D-A74930315AEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A6CE5A00-374C-4638-AF0D-A74930315AEA} = {53823047-BC86-48F5-8F04-89E8247304FE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1DE2F4FD-14DD-4BFE-B627-F7D8EE7FBD3D}

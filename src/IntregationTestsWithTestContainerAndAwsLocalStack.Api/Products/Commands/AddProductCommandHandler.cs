@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace IntregationTestsWithTestContainerAndAwsLocalStack.Api.Products.Commands
 {
-    public class AddProductCommandHandler : IRequestHandler<AddProductCommand, int>
+    public class AddProductCommandHandler : IRequestHandler<AddProductCommand, AddProductCommandResult>
     {
         private readonly IProductRepository _productRepository;
         private readonly IAmazonSQS _sqsClient;
@@ -19,16 +19,17 @@ namespace IntregationTestsWithTestContainerAndAwsLocalStack.Api.Products.Command
             _sqsClient = sqsClient;
         }
 
-        public async Task<int> Handle(AddProductCommand request, CancellationToken cancellationToken)
+        public async Task<AddProductCommandResult> Handle(AddProductCommand request, CancellationToken cancellationToken)
         {
             var product = new Product(request.Name, request.Price);
             await _productRepository.AddAsync(product);
 
             var productAddedEvent = new ProductAddedEvent { Name = product.Name, Price = product.Price };
             var sqsMessage = JsonSerializer.Serialize(productAddedEvent);
-            await _sqsClient.SendMessageAsync("http://localhost:4566/000000000000/BrandQueue", sqsMessage);
+            await _sqsClient.SendMessageAsync("http://localhost:4566/000000000000/ProductQueue", sqsMessage);
 
-            return product.Id;
+            var result = new AddProductCommandResult { Id = product.Id };
+            return result;
         }
     }
 }

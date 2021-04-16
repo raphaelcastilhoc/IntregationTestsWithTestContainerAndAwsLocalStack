@@ -2,6 +2,10 @@
 {
     public class Product
     {
+        private Product()
+        {
+        }
+
         public Product(string name, double price)
         {
             Name = name;
